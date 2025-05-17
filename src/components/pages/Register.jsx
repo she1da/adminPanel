@@ -2,6 +2,9 @@ import React from 'react';
 import PublicLayout from '../layout/PublicMain'
 
 const Register = () => {
+
+
+    
     return (
         <PublicLayout>
             <section className="bg-gray-50 m-10 ">
