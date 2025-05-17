@@ -1,9 +1,12 @@
-import { createContext, useContext, useReducer } from 'react';
-
+import React,{useState, createContext, useContext,  useReducer,useMemo,useCallback } from 'react';
+import {httpRequest} from '../services/httpRequests'
 const initialState = {
   user: null,
   isAuthenticated: false,
 };
+
+
+
 
 function authReducer(state, action) {
   switch (action.type) {
@@ -25,10 +28,23 @@ function authReducer(state, action) {
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [state, dispatch] = useReducer(authReducer, initialState);
+  // const [state, dispatch] = useReducer(authReducer, initialState);
 
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const login = useCallback((response) => {
+
+    // storeCredentials(response.credentials);
+    setCurrentUser(response.user);
+  }, []);
+
+
+  const contextValue = useMemo(() => ({
+    currentUser,
+    login
+  }), [currentUser, login]);
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
