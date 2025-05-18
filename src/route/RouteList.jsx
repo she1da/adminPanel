@@ -4,7 +4,7 @@ import Home from '../components/pages/Home';
 import About from '../components/pages/About';
 import Login from '../components/pages/Login';
 import Register from '../components/pages/Register';
-
+import UsersTable from '../components/UsersTable'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,6 +22,11 @@ const router = createBrowserRouter([
     path: "/register",
      element: <Register />,        
   },
+  {
+    path: "/users",
+     element: <UsersTable />,        
+  },
+  
 ]);
 export default router
 

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import {httpRequest} from '../../services/httpRequests'
 import PublicLayout from '../layout/PublicMain'
-
 import { useAuth } from '../../context/AuthContext'; // adjust the path if needed
-
+import { useNavigate } from 'react-router-dom';
 function Login() {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const navigate=useNavigate()
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,12 +22,14 @@ function Login() {
           password: password
         }
       })
-
       if (!response) {
         throw new Error('Login failed');
       }
-
-      login({ user: response });
+      if(response?.status === 200){
+        localStorage.setItem('token',response.data.token)
+      login({ user: response.data.userId});
+      navigate('/')
+      }
 
     } catch (err) {
       setError(err.message || 'Something went wrong');

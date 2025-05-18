@@ -16,13 +16,16 @@ console.log({formInfo})
     try {
       const response = await httpRequest('/users/signup',{
         method:'POST',
-        data:{
+        data:
        formInfo
-        }
+        
       })
 
       if (!response) {
         throw new Error('sign up failed');
+      }
+      if(response?.status === 201){
+        localStorage.setItem('token',response.data.token)
       }
 // redirect
 
@@ -32,9 +35,8 @@ console.log({formInfo})
   };
     return (
         <PublicLayout>
-            <section className="bg-gray-50 m-10 ">
-  <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 ">
-
+            <section className=" flex bg-gray-50 m-5 items-center justify-center">
+  
       <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -56,7 +58,7 @@ console.log({formInfo})
                                 </div>
                                                           <div>
                       <label htmlFor="mobile" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your mobile</label>
-                      <input onChange={(e)=>handleFormChange('mobile',e.target.value)} type="mobile" name="mobile" id="mobile" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  placeholder="" required/>
+                      <input onChange={(e)=>handleFormChange('mobile',+e.target.value)} type="mobile" name="mobile" id="mobile" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  placeholder="" required/>
                                 </div>
                                               <div>
                       <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your image</label>
@@ -95,7 +97,7 @@ console.log({formInfo})
               </form>
           </div>
       </div>
-  </div>
+
 </section>
         </PublicLayout>
     );

@@ -1,9 +1,5 @@
 import React,{useState, createContext, useContext,  useReducer,useMemo,useCallback } from 'react';
-import {httpRequest} from '../services/httpRequests'
-const initialState = {
-  user: null,
-  isAuthenticated: false,
-};
+
 
 
 
