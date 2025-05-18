@@ -4,7 +4,6 @@ import MainLayout from "../components/layout/MainLayout";
 import { TweenOneGroup } from "rc-tween-one";
 import { httpInterceptedServices } from "../services/httpRequests";
 const { Option } = Select;
-
 const TableContext = createContext(false);
 const enterAnim = [{ opacity: 0, x: 30, backgroundColor: "#fffeee", duration: 0 }, { height: 0, duration: 200, type: "from", delay: 250, ease: "easeOutQuad", onComplete: (e) => { e.target.style.height = "auto"; } }, { opacity: 1, x: 0, duration: 250, ease: "easeOutQuad" }, { delay: 1000, backgroundColor: "#fff" }];
 const leaveAnim = [{ duration: 250, opacity: 0 }, { height: 0, duration: 200, ease: "easeOutQuad" }];
@@ -87,9 +86,9 @@ const UsersTable = ({ className = "table-enter-leave-demo" }) => {
   const fetchUsers = async (page = 1, pageSize = 10) => {
     setLoading(true);
     try {
-      const { data: res } = await httpInterceptedServices(`/users?page=${page}&limit=${pageSize}`, { method: "GET" });
+      const { data: res } = await httpInterceptedServices(`/users/sieve?page=${page}&size=${pageSize}`, { method: "POST" });
 console.log({res})
-      setData(res.map((u) => ({ ...u, key: u.id })));
+      setData(res.users.map((u) => ({ ...u, key: u.id })));
       setPagination((prev) => ({ ...prev, current: page, pageSize, total: res.total }));
     } catch (err) {
       message.error(err.message || "Failed to load users");
@@ -100,7 +99,7 @@ console.log({res})
 
   const save = async (id) => {
     try {
-      const row = await form.validateFields();
+    //   const row = await form.validateFields();
       await httpInterceptedServices(`/users/${id}`, { method: "PUT", data: row });
       fetchUsers(pagination.current, pagination.pageSize);
       setEditingKey("");
@@ -119,12 +118,12 @@ console.log({res})
     setAddModalOpen(true);
   };
   const handleAdd = async () => {
-    // console.log({addForm})
+    console.log({addForm})
 
     try {
-      const values = await addForm.validateFields();
-    //   console.log({values})
-      await httpInterceptedServices("/users", { method: "POST", data: values });
+      const values = await addForm.getFieldsValue();
+      console.log({values})
+      await httpInterceptedServices("/users", { method: "POST", data: addForm.getFieldsValue() });
       message.success("User added");
       setAddModalOpen(false);
       fetchUsers(1, pagination.pageSize);
@@ -163,20 +162,38 @@ console.log({res})
           </TableContext.Provider>
         </Form>
       </div>
-          <Modal title="Add User" open={isAddModalOpen} onOk={handleAdd} onCancel={() => setAddModalOpen(false)} okText="Create"
+      <Modal title="Add User" open={isAddModalOpen} onOk={handleAdd}  onCancel={() => setAddModalOpen(false)} okText="Create"
 
-           destroyOnClose >
-        <Form form={addForm} layout="vertical" onFinish={handleAdd} preserve={true} >
-          <Form.Item name="fName" label="First Name" rules={[{ required: true }]}> <Input /> </Form.Item>
-          <Form.Item name="lName" label="Last Name" rules={[{ required: true }]}> <Input /> </Form.Item>
-          <Form.Item name="email" label="Email" rules={[{ required: true, type: "email" }]}> <Input /> </Form.Item>
-          <Form.Item name="mobile" label="Mobile" rules={[{ required: true }]}> <Input /> </Form.Item>
-          <Form.Item name="title" label="Title"> <Input /> </Form.Item>
-          <Form.Item name="role" label="Role" initialValue="user"> <Select><Option value="admin">admin</Option><Option value="user">user</Option></Select> </Form.Item>
-          <Form.Item name="skills" label="Skills"> <Input /> </Form.Item>
-          <Form.Item name="image" label="Avatar URL"> <Input /> </Form.Item>
-        </Form>
-      </Modal>
+>
+<Form form={addForm} layout="vertical" onFinish={handleAdd} >
+<Form.Item name="fName" label="First Name" rules={[{ required: true }]}>
+<Input />
+</Form.Item>
+
+<Form.Item name="lName" label="Last Name" rules={[{ required: true }]}>
+<Input />
+</Form.Item>
+<Form.Item name="email" label="email" rules={[{ required: true }]}>
+<Input />
+</Form.Item>
+<Form.Item name="mobile" label="mobile" rules={[{ required: true }]}>
+<Input />
+</Form.Item>
+<Form.Item name="title" label="title" rules={[{ required: true }]}>
+<Input />
+</Form.Item>
+<Form.Item name="role" label="role" rules={[{ required: true }]}>
+<Select><Option value="admin">admin</Option><Option value="user">user</Option></Select>
+</Form.Item>
+<Form.Item name="skills" label="skills" rules={[{ required: true }]}>
+<Input />
+</Form.Item>
+<Form.Item name="image" label="image" rules={[{ required: true }]}>
+<Input />
+</Form.Item>
+
+</Form>
+</Modal>
     </MainLayout>
   );
 };

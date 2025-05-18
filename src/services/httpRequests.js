@@ -36,7 +36,7 @@ httpInterceptedServices.interceptors.response.use(
     }
     if(error.response?.status === 401 ){
 
-        window.location.href = '/login'
+        // window.location.href = '/login'
 
 
     }
