@@ -1,26 +1,10 @@
-import React from 'react'
-import './App.css'
-import {  RouterProvider } from 'react-router-dom';
-import router from './route/RouteList'
+import React from 'react';
+import './App.css';
+import { RouterProvider } from 'react-router-dom';
+import router from './route/RouteList';
 
 function App() {
-
-    return <RouterProvider router={router} />
+  return <RouterProvider router={router} />;
 }
 
-export default App
-// import { useAuth } from '../context/AuthContext';
-
-// function Profile() {
-//   const { state } = useAuth();
-
-//   return (
-//     <div>
-//       {state.isAuthenticated ? (
-//         <p>Welcome, {state.user.name}!</p>
-//       ) : (
-//         <p>Please log in.</p>
-//       )}
-//     </div>
-//   );
-// }
+export default App;

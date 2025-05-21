@@ -6,7 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 const portalDiv = document.getElementById("root");
 createRoot(portalDiv).render(
   <StrictMode>
-      <AuthProvider>
+      <AuthProvider >
     <App />
   </AuthProvider>
    
