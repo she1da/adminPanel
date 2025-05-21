@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { Table, Button, message, Popconfirm, Avatar, Input, Select, Form, Modal } from "antd";
 import MainLayout from "../components/layout/MainLayout";
 import { TweenOneGroup } from "rc-tween-one";
@@ -29,7 +29,7 @@ const EditableCell = ({ editing, dataIndex, title, inputType, children, ...restP
   return (
     <td {...restProps}>
       {editing ? (
-        <Form.Item name={dataIndex} style={{ margin: 0 }} rules={[{ required: true, message: `Please Input ${title}!` }]}> {inputNode} </Form.Item>
+        <Form.Item name={dataIndex} style={{ margin: 0 }} rules={[{ required: true, message: `Please Input ${title}!` }]}>{inputNode}</Form.Item>
       ) : (
         children
       )}
@@ -99,7 +99,8 @@ console.log({res})
 
   const save = async (id) => {
     try {
-    //   const row = await form.validateFields();
+      const row = await form.validateFields();
+      console.log({row})
       await httpInterceptedServices(`/users/${id}`, { method: "PUT", data: row });
       fetchUsers(pagination.current, pagination.pageSize);
       setEditingKey("");
@@ -155,7 +156,7 @@ console.log({res})
               dataSource={data}
               loading={loading}
               pagination={pagination}
-            //   onChange={(e)=>handleTableChange(e)}
+        //   onChange={(e)=>handleTableChange(e)}
               className={`${className}-table`}
               scroll={{ x: 1200 }}
             />
@@ -169,7 +170,6 @@ console.log({res})
 <Form.Item name="fName" label="First Name" rules={[{ required: true }]}>
 <Input />
 </Form.Item>
-
 <Form.Item name="lName" label="Last Name" rules={[{ required: true }]}>
 <Input />
 </Form.Item>
