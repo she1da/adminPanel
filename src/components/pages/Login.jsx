@@ -28,12 +28,9 @@ function Login() {
       if (response?.status === 200) {
         console.log({ response });
         localStorage.setItem('token', response.data.token);
-        localStorage.setItem(
-          'user',
-          JSON.stringify({ username: response.data.userId, role: response.data.role })
-        );
+        // localStorage.setItem('currentUser', JSON.stringify({ currentUser: response.data }));
 
-        login({ currentUser: response.data.userId });
+        login({ currentUser: response.data });
         navigate('/');
       }
     } catch (err) {

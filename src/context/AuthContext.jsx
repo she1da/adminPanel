@@ -20,24 +20,31 @@ export const authorizationCheck = (currentUser) => {
   return true;
 };
 export function AuthProvider({ children }) {
-  // const [state, dispatch] = useReducer(authReducer, initialState);
-  const [currentUser, setCurrentUser] = useState(null);
-  // const navigate = useNavigate();
-
+  const [currentUser, setCurrentUser] = useState(() => {
+    const storedUser = localStorage.getItem('currentUser');
+    console.log({ storedUser });
+    // return null;
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const login = (response) => {
-    // storeCredentials(response.credentials);
     console.log({ response });
-    setCurrentUser(response.user);
+    setCurrentUser(response.currentUser);
+    localStorage.setItem('currentUser', JSON.stringify(response.currentUser));
   };
 
+  const logout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('currentUser');
+  };
   const contextValue = useMemo(
     () => ({
       currentUser,
       login,
+      logout,
       authorizationCheck,
       authenticationCheck,
     }),
-    [currentUser, login]
+    [currentUser]
   );
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 }

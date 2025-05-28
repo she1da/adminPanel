@@ -10,6 +10,8 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
+    action: () => {}, //set an action based on a condition
+    loader: '', // components that need to fetch data befor loading
   },
   {
     path: '/about',

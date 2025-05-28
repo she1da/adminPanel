@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Table, Button, message, Popconfirm, Avatar, Input, Select, Form, Modal } from 'antd';
 import MainLayout from '../components/layout/MainLayout';
 import { TweenOneGroup } from 'rc-tween-one';
@@ -96,12 +97,15 @@ const UsersTable = ({ className = 'table-enter-leave-demo' }) => {
     pageSize: 10,
     total: 0,
   });
+  const navigator = useNavigate();
   const { currentUser, authorizationCheck, authenticationCheck } = useAuth();
   console.log({ currentUser });
   const authorized = authorizationCheck(currentUser);
   const authenticated = authenticationCheck(currentUser);
   console.log({ currentUser, authorized, authenticated });
-
+  if (!authorized || !authenticated) {
+    navigator('/login');
+  }
   // const navigate = useNavigate();
   // const user = JSON.parse(localStorage.getItem('user'));
 
@@ -177,6 +181,9 @@ const UsersTable = ({ className = 'table-enter-leave-demo' }) => {
       }),
     };
   });
+  const handleTableChange = (pagination) => {
+    fetchUsers(pagination.current, pagination.pageSize);
+  };
 
   const fetchUsers = async (page = 1, pageSize = 10) => {
     setLoading(true);
@@ -277,7 +284,7 @@ const UsersTable = ({ className = 'table-enter-leave-demo' }) => {
               dataSource={data}
               loading={loading}
               pagination={pagination}
-              //   onChange={(e)=>handleTableChange(e)}
+              onChange={handleTableChange}
               className={`${className}-table`}
               scroll={{ x: 1200 }}
             />
